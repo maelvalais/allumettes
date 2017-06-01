@@ -1,0 +1,48 @@
+$NJ = 2 ;; number of players
+$J = [0,2] ;; set of players
+$Nb = 3
+$N = [0..$Nb] ;; set of matches
+$T = [0..$Nb] ;; set of turns
+
+reste(0,3)
+tour(1)
+
+
+bigand $t in $T:
+  not tour($t) <=> tour($t+1)
+end
+
+;; reste(t,n) = il reste n allumettes au temps t
+;; prise(t) = au temps t, 2 allumettes si vrai, 1 sinon
+
+;; S'il reste n allumettes et que le joueur au temps t a pris 2 allumette,
+;; alors 
+
+;; Resultat de l'action de la prise : si on a pris, il faut baisser
+;; le nombre d'allumettes.
+exists prise(1): forall prise(2): exists prise(3): not perdu
+and
+bigand $t,$n in $T,$N when $n>=2:
+  ((reste($t,$n) and prise($t+1)) => reste($t+1,$n-2))
+  and
+  ((reste($t,$n) and not prise($t+1)) => reste($t+1,$n-1))
+end
+and
+bigand $t in $T:
+  reste($t,1) => (not prise($t+1) and reste($t+1,0))
+end
+
+bigand $t in $T:
+  bigor $n in $N:
+    reste($t,$n)
+  end
+end
+
+bigand $t,$n1,$n2 in $T,$N,$N when $n1!=$n2:
+  reste($t,$n1) => not reste($t,$n2)
+end
+
+0_a_perdu <=>
+bigor $t in $T:
+  tour($t+1) and reste($t,0) and not reste($t-1,0)
+end
