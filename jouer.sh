@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 #set -ex
+# We need `false | true` to fail because of false (see [gray])
+set -o pipefail
 
 DEBUG=
 for p in $@; do
@@ -16,12 +18,19 @@ function joueur() {
         echo -ne "\033[91mjoueur $1\033[0m"
     fi
 }
+# In order to fail if the command that is piped to [gray] fails, the calling
+# script must be set with `set -o pipefail`.
+function gray() {
+    echo -ne "\033[90m"
+    cat /dev/stdin
+    echo -ne "\033[0m"
+}
 
 cp allumettes2.touist temp
 a_gagne=false
 while ! $a_gagne; do
-    touist temp --solve --qbf | sort -k2 -t"(" | grep '^[^?] ' > result
-    if grep "0_a_perdu" result; then echo "Joueur 0 a gagné"; exit 0; fi
+    touist temp --solve --qbf | sort -k2 -t"(" -n | grep '^[^?] ' > result
+    if grep "0_a_perdu" result | gray; then echo "Joueur 0 a gagné"; exit 0; fi
     while read line; do
         nb_allum=$(echo $line | sed "s/^\([01]\) .*/\1/g")
         num_coup=$(echo $line | sed "s/^[01] prend2(\([0-9][0-9]*\))/\1/g")
@@ -38,7 +47,7 @@ while ! $a_gagne; do
     sed "s/^\(forall\|exists\) prend2($((num_coup+1))):.*/exists prend2($((num_coup+1))): $([[ $choix -eq 1 ]] && echo not) prend2($((num_coup+1))) and/g" temp > $$ && mv $$ temp
 
     [ -z $DEBUG ] || grep "\(exists\|forall\)" temp | while IFS= read line; do
-        echo -e "\033[90m${line}\033[0m"
+        echo $line | gray
     done
 done
 
