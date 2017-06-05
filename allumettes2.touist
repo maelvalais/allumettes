@@ -1,48 +1,72 @@
 $NJ = 2 ;; number of players
 $J = [0,2] ;; set of players
-$Nb = 3
+$Nb = 10
 $N = [0..$Nb] ;; set of matches
 $T = [0..$Nb] ;; set of turns
 
-reste(0,3)
-tour(1)
-
-
-bigand $t in $T:
-  not tour($t) <=> tour($t+1)
-end
-
 ;; reste(t,n) = il reste n allumettes au temps t
-;; prise(t) = au temps t, 2 allumettes si vrai, 1 sinon
+;; prend2(t) = au temps t, 2 allumettes si vrai, 1 sinon
 
 ;; S'il reste n allumettes et que le joueur au temps t a pris 2 allumette,
-;; alors 
+;; alors
 
 ;; Resultat de l'action de la prise : si on a pris, il faut baisser
 ;; le nombre d'allumettes.
-exists prise(1): forall prise(2): exists prise(3): not perdu
+
+(
+exists prend2(0): ;; joueur 0 (nous)
+forall prend2(1): ;; joueur 1 (adversaire)
+exists prend2(2): ;; joueur 0 (nous)
+forall prend2(3): ;; joueur 1 (adversaire)
+exists prend2(4): ;; joueur 0 (nous)
+forall prend2(5): ;; joueur 1 (adversaire)
+exists prend2(6): ;; joueur 0 (nous)
+forall prend2(7): ;; joueur 1 (adversaire)
+exists prend2(8): ;; joueur 0 (nous)
+
+;; But
+not 0_a_perdu
+;; Conditions initiales
+and reste(0,$Nb)
+and tour_de_0(0)
+
 and
 bigand $t,$n in $T,$N when $n>=2:
-  ((reste($t,$n) and prise($t+1)) => reste($t+1,$n-2))
+  ((reste($t,$n) and prend2($t)) => reste($t+1,$n-2))
   and
-  ((reste($t,$n) and not prise($t+1)) => reste($t+1,$n-1))
+  ((reste($t,$n) and not prend2($t)) => reste($t+1,$n-1))
 end
 and
 bigand $t in $T:
-  reste($t,1) => (not prise($t+1) and reste($t+1,0))
+  reste($t,1) => (not prend2($t) and reste($t+1,0))
 end
-
+and
+;; On ne peut pas prendre 2 allumettes si il n'en reste plus qu'une.
+bigand $t in $T:
+  reste($t,1) => (not prend2($t) and reste($t+1,0))
+end
+;;and
+;; prend2(1) ;; le joueur 1, au tour 0
+and
 bigand $t in $T:
   bigor $n in $N:
     reste($t,$n)
   end
 end
-
+and
 bigand $t,$n1,$n2 in $T,$N,$N when $n1!=$n2:
   reste($t,$n1) => not reste($t,$n2)
 end
+and
+;; Si le joueur j ne peut pas prendre à t et que au coup précédent, joueur j-1
+;; a pu prendre une allumette, alors le joueur j a perdu.
+(0_a_perdu <=>
+bigor $t in $T when $t>0:
+  tour_de_0($t) and reste($t,0) and not (reste($t-1,1) and reste($t-1,2))
+end)
 
-0_a_perdu <=>
-bigor $t in $T:
-  tour($t+1) and reste($t,0) and not reste($t-1,0)
+and
+bigand $t in $T:
+  not tour_de_0($t) <=> tour_de_0($t+1)
 end
+)
