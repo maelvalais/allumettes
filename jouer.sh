@@ -3,12 +3,6 @@
 # We need `false | true` to fail because of false (see [gray])
 set -o pipefail
 
-DEBUG=
-for p in $@; do
-    case $p in
-        -d|--debug) DEBUG="yes";;
-    esac
-done
 
 # Parameter: turn number
 function joueur() {
@@ -27,6 +21,31 @@ function gray() {
 }
 
 cp allumettes2.touist temp
+
+DEBUG=
+for p in $@; do
+    case $p in
+        -d|--debug)
+            DEBUG="yes"
+        ;;
+        -l|--list)
+            echo "Nombre d'allumettes valides pour que $(joueur 0) gagne:"
+            i=1
+            while ((i<=27)); do
+                cp allumettes2.touist a
+                echo "\$Nb=$i" >> a
+                touist --qbf a >/dev/null && echo "$i" || true
+                ((i++))
+            done
+            exit
+        ;;
+        *)
+            echo "\$Nb = $p" >> temp
+            echo "On joue avec $p allumettes"
+        ;;
+    esac
+done
+
 a_gagne=false
 while ! $a_gagne; do
     touist temp --solve --qbf | sort -k2 -t"(" -n | grep '^[^?] ' > result || exit 1
