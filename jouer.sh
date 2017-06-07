@@ -20,6 +20,18 @@ function gray() {
     echo -ne "\033[0m"
 }
 
+function usage() {
+cat <<-EOF
+Usage: $0 [-d] N
+Usage: $0 -l
+Options:
+    N                 the number of matches
+    -d | --debug      enable the debug mode to see what happens
+    -l | --list       list the N where the player 0 has a winning strategy
+EOF
+exit 0
+}
+
 cp allumettes2.touist temp
 
 DEBUG=
@@ -38,6 +50,9 @@ for p in $@; do
                 ((i++))
             done
             exit
+        ;;
+        -h|--help)
+            usage
         ;;
         *)
             echo "\$Nb = $p" >> temp
