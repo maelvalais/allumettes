@@ -1,6 +1,4 @@
 $Nb = 13
-$NJ = 2 ;; number of players
-$J = [0,2] ;; set of players
 $N = [0..$Nb] ;; set of matches
 $T = [0..$Nb] ;; set of turns
 
@@ -14,6 +12,7 @@ $T = [0..$Nb] ;; set of turns
 ;; le nombre d'allumettes.
 
 (
+exists $i for $i in reste(0,$N):
 exists prend2(0):  exists $i for $i in reste(1,$N): ;; joueur 0 (nous)
 forall prend2(1):  exists $i for $i in reste(2,$N): ;; joueur 1 (adversaire)
 exists prend2(2):  exists $i for $i in reste(3,$N): ;; joueur 0 (nous)
@@ -75,8 +74,8 @@ bigand $t in $T:
   end
 end
 and
-bigand $t,$n1,$n2 in $T,$N,$N when $n1!=$n2:
-  reste($t,$n1) => not reste($t,$n2)
+bigand $t,$n1 in $T,$N:
+  reste($t,$n1) => bigand $n2 in $N when $n1!=$n2: not reste($t,$n2) end
 end
 and
 ;; Si le joueur j ne peut pas prendre à t et que au coup précédent, joueur j-1
