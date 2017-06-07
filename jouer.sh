@@ -29,26 +29,37 @@ function gray() {
 cp allumettes2.touist temp
 a_gagne=false
 while ! $a_gagne; do
-    touist temp --solve --qbf | sort -k2 -t"(" -n | grep '^[^?] ' > result
+    touist temp --solve --qbf | sort -k2 -t"(" -n | grep '^[^?] ' > result || exit 1
     if grep "0_a_perdu" result | gray; then echo "Joueur 0 a gagné"; exit 0; fi
     while read line; do
-        nb_allum=$(echo $line | sed "s/^\([01]\) .*/\1/g")
-        num_coup=$(echo $line | sed "s/^[01] prend2(\([0-9][0-9]*\))/\1/g")
-        #perl -n -e '/([01]) prend2\((\d+)\)$/ && print $1 $2'
-        echo "Tour $num_coup: $(joueur $((num_coup%2))) doit prendre $([ "$nb_allum" -eq 0 ] && echo 1 || echo 2) allumettes"
-    done < <(tail -1 result)
+        if echo $line | grep -q "[01] prend2"; then
+            nb_allum=$(echo $line | sed "s/^\([01]\) prend2.*/\1/g")
+            num_coup=$(echo $line | sed "s/^[01] prend2(\([0-9][0-9]*\))/\1/g")
+            #perl -n -e '/([01]) prend2\((\d+)\)$/ && print $1 $2'
+        fi
+        if echo $line | grep -q "^1 reste($((num_coup+1)),"; then
+            reste=$(echo $line | sed "s/^1 reste(.*,\([0-9]*\)).*$/\1/g")
+        fi
+    done < result
+    [ -z $DEBUG ] || grep "^\(1 reste(\|. prend2\)" result | gray
+    echo "Tour $num_coup: $(joueur $((num_coup%2))) doit prendre $([ "$nb_allum" -eq 0 ] && echo 1 || echo 2) allumettes (et reste $reste allumettes)"
 
-    # Now, we want to replace the forall by a exists:
-    #             forall prend2(7):
-    # becomes     exists prend2(7): [not] prend2(7) and
+    # Winning condition
+    if grep -q "^1 reste(.*,0)" result; then
+        a_gagne=true
+    else
+        echo -n "Tour $((num_coup+1)): $(joueur $(((num_coup+1)%2)))  prend 1 ou 2 au tour $((num_coup+1)) ? "
+        read choix
+        # Now, we want to replace the forall by a exists:
+        #             forall prend2(7):
+        # becomes     exists prend2(7): [not] prend2(7) and
+        sed "s/^\(forall\|exists\) prend2($((num_coup+1))):\(.*\)$/exists prend2($((num_coup+1))): $([[ $choix -eq 1 ]] && echo not) prend2($((num_coup+1))) and \2/g" temp > $$ && mv $$ temp
 
-    echo -n "Tour $((num_coup+1)): $(joueur $(((num_coup+1)%2)))  prend 1 ou 2 au tour $((num_coup+1)) ? "
-    read choix
-    sed "s/^\(forall\|exists\) prend2($((num_coup+1))):.*/exists prend2($((num_coup+1))): $([[ $choix -eq 1 ]] && echo not) prend2($((num_coup+1))) and/g" temp > $$ && mv $$ temp
+        [ -z $DEBUG ] || grep "^\(exists\|forall\) prend" temp | while IFS= read line; do
+            echo $line | gray
+        done
+    fi
 
-    [ -z $DEBUG ] || grep "\(exists\|forall\)" temp | while IFS= read line; do
-        echo $line | gray
-    done
 done
 
 

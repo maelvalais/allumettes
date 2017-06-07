@@ -1,6 +1,6 @@
 $NJ = 2 ;; number of players
 $J = [0,2] ;; set of players
-$Nb = 10
+$Nb = 4
 $N = [0..$Nb] ;; set of matches
 $T = [0..$Nb] ;; set of turns
 
@@ -14,17 +14,17 @@ $T = [0..$Nb] ;; set of turns
 ;; le nombre d'allumettes.
 
 (
-exists prend2(0): ;; joueur 0 (nous)
-forall prend2(1): ;; joueur 1 (adversaire)
-exists prend2(2): ;; joueur 0 (nous)
-forall prend2(3): ;; joueur 1 (adversaire)
-exists prend2(4): ;; joueur 0 (nous)
-forall prend2(5): ;; joueur 1 (adversaire)
-exists prend2(6): ;; joueur 0 (nous)
-forall prend2(7): ;; joueur 1 (adversaire)
-exists prend2(8): ;; joueur 0 (nous)
-forall prend2(9): ;; joueur 1 (adversaire)
-exists prend2(10): ;; joueur 0 (nous)
+exists prend2(0): exists $i for $i in reste(1,$N): ;; joueur 0 (nous)
+forall prend2(1): exists $i for $i in reste(2,$N): ;; joueur 1 (adversaire)
+exists prend2(2): exists $i for $i in reste(3,$N): ;; joueur 0 (nous)
+forall prend2(3): exists $i for $i in reste(4,$N): ;; joueur 1 (adversaire)
+exists prend2(4): exists $i for $i in reste(5,$N): ;; joueur 0 (nous)
+forall prend2(5): exists $i for $i in reste(6,$N): ;; joueur 1 (adversaire)
+exists prend2(6): exists $i for $i in reste(7,$N): ;; joueur 0 (nous)
+forall prend2(7): exists $i for $i in reste(8,$N): ;; joueur 1 (adversaire)
+exists prend2(8): exists $i for $i in reste(9,$N): ;; joueur 0 (nous)
+forall prend2(9): exists $i for $i in reste(10,$N): ;; joueur 1 (adversaire)
+;; exists prend2(10): ;; joueur 0 (nous)
 ;; forall prend2(11): ;; joueur 1 (adversaire)
 ;; exists prend2(12): ;; joueur 0 (nous)
 ;; forall prend2(13): ;; joueur 1 (adversaire)
