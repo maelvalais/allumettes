@@ -1,0 +1,21 @@
+$T = [0..5]
+;; Jeu du marcadet-poissonniers
+;; t représente le temps.
+;; t:    0 ----> 1 -----> 2 -----> 3
+;; tour: 0       1        0        1
+;; Au tour 0, le joueur 0 choisit de ne pas dire: 'not dit(0)'.
+;; dit(t) signifie qu'au tour t, le joueur 0 ou 1 (selon parité) dit le mot
+not dit(-1)
+
+;; Si le joueur précédent ne dit pas, le joueur suivant doit choisir qqchose
+bigand $t in $T:
+  dit($t) => (dit($t) or not dit($t))
+end
+
+;; Le joueur 0 (pair) gagne ssi c'est à son tour et qu'au tour suivant, 1 parle
+0_a_gagne and not 1_a_gagne <=>
+not bigor $t in $T when $t mod 2 == 0:
+  dit($t-1)
+end
+
+0_a_gagne
