@@ -31,9 +31,12 @@ a_gagne=false
 while ! $a_gagne; do
     touist temp --solve --qbf | sort -k2 -t"(" -n | grep '^[^?] ' > result || exit 1
     if grep "0_a_perdu" result | gray; then echo "Joueur 0 a gagné"; exit 0; fi
+    reste=?
+    prend_2=0
+    num_coup=0
     while read line; do
         if echo $line | grep -q "[01] prend2"; then
-            nb_allum=$(echo $line | sed "s/^\([01]\) prend2.*/\1/g")
+            prend_2=$(echo $line | sed "s/^\([01]\) prend2.*/\1/g")
             num_coup=$(echo $line | sed "s/^[01] prend2(\([0-9][0-9]*\))/\1/g")
             #perl -n -e '/([01]) prend2\((\d+)\)$/ && print $1 $2'
         fi
@@ -42,22 +45,23 @@ while ! $a_gagne; do
         fi
     done < result
     [ -z $DEBUG ] || grep "^\(1 reste(\|. prend2\)" result | gray
-    echo "Tour $num_coup: $(joueur $((num_coup%2))) doit prendre $([ "$nb_allum" -eq 0 ] && echo 1 || echo 2) allumettes (et reste $reste allumettes)"
+    echo "Tour $num_coup: $(joueur $((num_coup%2))) doit prendre $([ "$prend_2" -eq 0 ] && echo 1 || echo 2) allumettes (et reste $reste allumettes)"
+
+    # We must be sure we won't change our choice anytime after this point
+    sed "s/^\(.*\)\(forall\|exists\) prend2($num_coup):\(.*\)$/\1exists prend2($num_coup): $([[ $prend_2 -eq 0 ]] && echo 'not ')prend2($num_coup) and\3/g" temp > $$ && mv $$ temp
 
     # Winning condition
     if grep -q "^1 reste(.*,0)" result; then
         a_gagne=true
     else
-        echo -n "Tour $((num_coup+1)): $(joueur $(((num_coup+1)%2)))  prend 1 ou 2 au tour $((num_coup+1)) ? "
+        echo -n "Tour $((num_coup+1)): $(joueur $(((num_coup+1)%2))) en prend 1 ou 2? "
         read choix
         # Now, we want to replace the forall by a exists:
         #             forall prend2(7):
         # becomes     exists prend2(7): [not] prend2(7) and
-        sed "s/^\(forall\|exists\) prend2($((num_coup+1))):\(.*\)$/exists prend2($((num_coup+1))): $([[ $choix -eq 1 ]] && echo not) prend2($((num_coup+1))) and \2/g" temp > $$ && mv $$ temp
+        sed "s/^\(.*\)\(forall\|exists\) prend2($((num_coup+1))):\(.*\)$/\1exists prend2($((num_coup+1))): $([[ $choix -eq 1 ]] && echo 'not ')prend2($((num_coup+1))) and \3/g" temp > $$ && mv $$ temp
 
-        [ -z $DEBUG ] || grep "^\(exists\|forall\) prend" temp | while IFS= read line; do
-            echo $line | gray
-        done
+        [ -z $DEBUG ] || grep "^\(exists\|forall\) prend" temp | gray
     fi
 
 done

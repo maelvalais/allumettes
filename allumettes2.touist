@@ -1,6 +1,6 @@
 $NJ = 2 ;; number of players
 $J = [0,2] ;; set of players
-$Nb = 4
+$Nb = 10
 $N = [0..$Nb] ;; set of matches
 $T = [0..$Nb] ;; set of turns
 
@@ -14,34 +14,34 @@ $T = [0..$Nb] ;; set of turns
 ;; le nombre d'allumettes.
 
 (
-exists prend2(0): exists $i for $i in reste(1,$N): ;; joueur 0 (nous)
-forall prend2(1): exists $i for $i in reste(2,$N): ;; joueur 1 (adversaire)
-exists prend2(2): exists $i for $i in reste(3,$N): ;; joueur 0 (nous)
-forall prend2(3): exists $i for $i in reste(4,$N): ;; joueur 1 (adversaire)
-exists prend2(4): exists $i for $i in reste(5,$N): ;; joueur 0 (nous)
-forall prend2(5): exists $i for $i in reste(6,$N): ;; joueur 1 (adversaire)
-exists prend2(6): exists $i for $i in reste(7,$N): ;; joueur 0 (nous)
-forall prend2(7): exists $i for $i in reste(8,$N): ;; joueur 1 (adversaire)
-exists prend2(8): exists $i for $i in reste(9,$N): ;; joueur 0 (nous)
-forall prend2(9): exists $i for $i in reste(10,$N): ;; joueur 1 (adversaire)
+exists prend2(0):  exists $i for $i in reste(1,$N): ;; joueur 0 (nous)
+forall prend2(1):  exists $i for $i in reste(2,$N): ;; joueur 1 (adversaire)
+exists prend2(2):  exists $i for $i in reste(3,$N): ;; joueur 0 (nous)
+forall prend2(3):  exists $i for $i in reste(4,$N): ;; joueur 1 (adversaire)
+exists prend2(4):  exists $i for $i in reste(5,$N): ;; joueur 0 (nous)
+forall prend2(5):  exists $i for $i in reste(6,$N): ;; joueur 1 (adversaire)
+exists prend2(6):  exists $i for $i in reste(7,$N): ;; joueur 0 (nous)
+forall prend2(7):  exists $i for $i in reste(8,$N): ;; joueur 1 (adversaire)
+exists prend2(8):  exists $i for $i in reste(9,$N): ;; joueur 0 (nous)
+forall prend2(9):  exists $i for $i in reste(10,$N): ;; joueur 1 (adversaire)
 exists prend2(10): exists $i for $i in reste(11,$N): ;; joueur 0 (nous)
 forall prend2(11): exists $i for $i in reste(12,$N):  ;; joueur 1 (adversaire)
 exists prend2(12): exists $i for $i in reste(13,$N): ;; joueur 0 (nous)
 forall prend2(13): exists $i for $i in reste(14,$N): ;; joueur 1 (adversaire)
 exists prend2(14): exists $i for $i in reste(15,$N): ;; joueur 0 (nous)
-forall prend2(15): exists $i for $i in reste(16,$N): ;; joueur 1 (adversaire)
-exists prend2(16): exists $i for $i in reste(17,$N): ;; joueur 0 (nous)
-forall prend2(17): exists $i for $i in reste(18,$N): ;; joueur 1 (adversaire)
-exists prend2(18): exists $i for $i in reste(19,$N): ;; joueur 0 (nous)
-forall prend2(19): exists $i for $i in reste(20,$N): ;; joueur 1 (adversaire)
-exists prend2(20): exists $i for $i in reste(21,$N): ;; joueur 0 (nous)
-forall prend2(21): exists $i for $i in reste(22,$N): ;; joueur 1 (adversaire)
-exists prend2(22): exists $i for $i in reste(23,$N): ;; joueur 0 (nous)
-forall prend2(23): exists $i for $i in reste(24,$N): ;; joueur 1 (adversaire)
-exists prend2(24): exists $i for $i in reste(25,$N): ;; joueur 0 (nous)
-forall prend2(25): exists $i for $i in reste(26,$N): ;; joueur 1 (adversaire)
-exists prend2(26): exists $i for $i in reste(27,$N): ;; joueur 0 (nous)
-forall prend2(27): exists $i for $i in reste(28,$N): ;; joueur 1 (adversaire)
+;; forall prend2(15): exists $i for $i in reste(16,$N): ;; joueur 1 (adversaire)
+;; exists prend2(16): exists $i for $i in reste(17,$N): ;; joueur 0 (nous)
+;; forall prend2(17): exists $i for $i in reste(18,$N): ;; joueur 1 (adversaire)
+;; exists prend2(18): exists $i for $i in reste(19,$N): ;; joueur 0 (nous)
+;; forall prend2(19): exists $i for $i in reste(20,$N): ;; joueur 1 (adversaire)
+;; exists prend2(20): exists $i for $i in reste(21,$N): ;; joueur 0 (nous)
+;; forall prend2(21): exists $i for $i in reste(22,$N): ;; joueur 1 (adversaire)
+;; exists prend2(22): exists $i for $i in reste(23,$N): ;; joueur 0 (nous)
+;; forall prend2(23): exists $i for $i in reste(24,$N): ;; joueur 1 (adversaire)
+;; exists prend2(24): exists $i for $i in reste(25,$N): ;; joueur 0 (nous)
+;; forall prend2(25): exists $i for $i in reste(26,$N): ;; joueur 1 (adversaire)
+;; exists prend2(26): exists $i for $i in reste(27,$N): ;; joueur 0 (nous)
+;; forall prend2(27): exists $i for $i in reste(28,$N): ;; joueur 1 (adversaire)
 
 ;; But
 not 0_a_perdu
