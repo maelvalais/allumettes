@@ -1,7 +1,7 @@
 # Stratégie gagnante pour le jeu de Nim
 
-Le fichier `allumettes.touist` contient le codage du problème du jeu de Nim
-en QBF.
+Le fichier `allumettes2.touist` contient le codage du problème du jeu de Nim
+simplifié (le joueur peut choisir 1 ou 2 allumettes) en QBF.
 
 Le script `jouer.sh` permet de jouer en suivant une stratégie gagnante pour le
 joueur 0 (le joueur qui commence).
