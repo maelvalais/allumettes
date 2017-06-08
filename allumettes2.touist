@@ -1,4 +1,4 @@
-$Nb = 30
+$Nb = 29
 $N = [0..$Nb] ;; set of matches
 $T = [0..$Nb] ;; set of turns
 
