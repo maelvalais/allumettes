@@ -1,4 +1,4 @@
-$Nb = 13
+$Nb = 30
 $N = [0..$Nb] ;; set of matches
 $T = [0..$Nb] ;; set of turns
 
@@ -55,10 +55,6 @@ bigand $t,$n in $T,$N when $n>=2:
   ((reste($t,$n) and prend2($t)) => reste($t+1,$n-2))
   and
   ((reste($t,$n) and not prend2($t)) => reste($t+1,$n-1))
-end
-and
-bigand $t in $T:
-  reste($t,1) => (not prend2($t) and reste($t+1,0))
 end
 and
 ;; On ne peut pas prendre 2 allumettes si il n'en reste plus qu'une.
