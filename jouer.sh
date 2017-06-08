@@ -62,6 +62,7 @@ for p in $@; do
     esac
 done
 
+# The player 0 wins as soon as the proposition 'reste(_,0)' is true.
 a_gagne=false
 while ! $a_gagne; do
     touist temp.touist --solve --qbf | sort -k2 -t"(" -n | grep '^[^?] ' > result || exit 1

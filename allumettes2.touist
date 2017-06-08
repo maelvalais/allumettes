@@ -5,12 +5,6 @@ $T = [0..$Nb] ;; set of turns
 ;; reste(t,n) = il reste n allumettes au temps t
 ;; prend2(t) = au temps t, 2 allumettes si vrai, 1 sinon
 
-;; S'il reste n allumettes et que le joueur au temps t a pris 2 allumette,
-;; alors
-
-;; Resultat de l'action de la prise : si on a pris, il faut baisser
-;; le nombre d'allumettes.
-
 (
 exists $i for $i in reste(0,$N):
 exists prend2(0):  exists $i for $i in reste(1,$N): ;; joueur 0 (nous)
@@ -49,39 +43,47 @@ not 0_a_perdu
 ;; Conditions initiales
 and reste(0,$Nb)
 and tour_de_0(0)
-
 and
+
+;; Resultat de l'action de la prise : si on a pris, il faut baisser
+;; le nombre d'allumettes.
 bigand $t,$n in $T,$N when $n>=2:
   ((reste($t,$n) and prend2($t)) => reste($t+1,$n-2))
   and
   ((reste($t,$n) and not prend2($t)) => reste($t+1,$n-1))
 end
 and
+
 ;; On ne peut pas prendre 2 allumettes si il n'en reste plus qu'une.
 bigand $t in $T:
   reste($t,1) => (not prend2($t) and reste($t+1,0))
 end
-;;and
-;; prend2(1) ;; le joueur 1, au tour 0
 and
+
+;; Au moins un nombre d'allumettes par tour.
 bigand $t in $T:
   bigor $n in $N:
     reste($t,$n)
   end
 end
 and
+
+;; Au plus un nombre d'allumettes par tour.
 bigand $t,$n1 in $T,$N:
   reste($t,$n1) => bigand $n2 in $N when $n1!=$n2: not reste($t,$n2) end
 end
 and
+
 ;; Si le joueur j ne peut pas prendre à t et que au coup précédent, joueur j-1
 ;; a pu prendre une allumette, alors le joueur j a perdu.
 (0_a_perdu <=>
 bigor $t in $T when $t>0:
   tour_de_0($t) and reste($t,0) and not (reste($t-1,1) and reste($t-1,2))
 end)
-
 and
+
+;; Si le joueur 0 joue au tour t, alors ça sera à l'autre joueur au tour
+;; suivant.
 bigand $t in $T:
   not tour_de_0($t) <=> tour_de_0($t+1)
 end
