@@ -68,20 +68,20 @@ while ! $a_gagne; do
     touist temp.touist --solve --qbf | sort -k2 -t"(" -n | grep '^[^?] ' > result || exit 1
     reste=?
     while read line; do
-        if echo $line | grep -q "[01] prend2"; then
-            prend_2=$(echo $line | sed "s/^\([01]\) prend2.*/\1/g")
-            num_coup=$(echo $line | sed "s/^[01] prend2(\([0-9][0-9]*\))/\1/g")
-            #perl -n -e '/([01]) prend2\((\d+)\)$/ && print $1 $2'
+        if echo $line | grep -q "[01] prend"; then
+            prend_2=$(echo $line | sed "s/^\([01]\) prend.*/\1/g")
+            num_coup=$(echo $line | sed "s/^[01] prend(\([0-9][0-9]*\).*/\1/g")
+            #perl -n -e '/([01]) prend\((\d+)\),.*$/ && print $1 $2'
         fi
         if echo $line | grep -q "^1 reste($((num_coup+1)),"; then
             reste=$(echo $line | sed "s/^1 reste(.*,\([0-9]*\)).*$/\1/g")
         fi
     done < result
-    [ -z $DEBUG ] || grep "^\(1 reste(\|[01]* prend2\)" result | gray
+    [ -z $DEBUG ] || grep "^\(1 reste(\|[01]* prend\)" result | gray
     echo "Tour $num_coup: $(joueur $((num_coup%2))) doit prendre $([ "$prend_2" -eq 0 ] && echo 1 || echo 2) allumettes (et reste $reste allumettes)"
 
     # We must be sure we won't change our choice anytime after this point
-    sed "s/^\(.*\)\(forall\|exists\) prend2($num_coup):\(.*\)$/\1exists prend2($num_coup): $([[ $prend_2 -eq 0 ]] && echo 'not ')prend2($num_coup) and\3/g" temp.touist > $$ && mv $$ temp.touist
+    sed "s/^\(.*\)\(forall\|exists\) prend($num_coup,2):\(.*\)$/\1exists prend($num_coup,2): $([[ $prend_2 -eq 0 ]] && echo 'not ')prend($num_coup,2) and\3/g" temp.touist > $$ && mv $$ temp.touist
 
     # Winning condition
     if grep -q "^1 reste(.*,0)" result; then
@@ -90,9 +90,9 @@ while ! $a_gagne; do
         echo -n "Tour $((num_coup+1)): $(joueur $(((num_coup+1)%2))) en prend 1 ou 2? "
         read choix
         # Now, we want to replace the forall by a exists:
-        #             forall prend2(7):
-        # becomes     exists prend2(7): [not] prend2(7) and
-        sed "s/^\(.*\)\(forall\|exists\) prend2($((num_coup+1))):\(.*\)$/\1exists prend2($((num_coup+1))): $([[ $choix -eq 1 ]] && echo 'not ')prend2($((num_coup+1))) and \3/g" temp.touist > $$ && mv $$ temp.touist
+        #             forall prend(7,2):
+        # becomes     exists prend(7,2): [not] prend(7,2) and
+        sed "s/^\(.*\)\(forall\|exists\) prend($((num_coup+1)),2):\(.*\)$/\1exists prend($((num_coup+1))): $([[ $choix -eq 1 ]] && echo 'not ')prend($((num_coup+1)),2) and \3/g" temp.touist > $$ && mv $$ temp.touist
 
         [ -z $DEBUG ] || grep "^\(exists\|forall\) prend" temp.touist | gray
     fi
@@ -101,8 +101,8 @@ done
 echo "Joueur 0 a gagné"; exit 0
 
 
-# exists prend2(0): ;; joueur 0 (nous)
-# forall prend2(1): prend2(1) and ;; joueur 1 (adversaire)
-# exists prend2(2): ;; joueur 0 (nous)
-# forall prend2(3): ;; joueur 1 (adversaire)
+# exists prend(0,2): ;; joueur 0 (nous)
+# forall prend(1,2): prend(1,2) and ;; joueur 1 (adversaire)
+# exists prend(2,2): ;; joueur 0 (nous)
+# forall prend(3,2): ;; joueur 1 (adversaire)
 

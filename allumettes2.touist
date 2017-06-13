@@ -1,63 +1,66 @@
-$Nb = 29
+;; Requiert touist >= 3.2.0
+$Nb = 4
 $N = [0..$Nb] ;; set of matches
 $T = [0..$Nb] ;; set of turns
 
 ;; reste(t,n) = il reste n allumettes au temps t
-;; prend2(t) = au temps t, 2 allumettes si vrai, 1 sinon
+;; prend(t,2) = au temps t, 2 allumettes si vrai, 1 sinon
 
+;; Les 'exists reste(i,$N)' au tour i sont nécessaires pour être certain que
+;; quantor fixera ces valeurs après qu'un 'prend(i,2)' est fixé. Sinon,
+;; on ne peut jamais savoir quand 'reste(i,0)' est vrai.
 (
-exists $i for $i in reste(0,$N):
-exists prend2(0):  exists $i for $i in reste(1,$N): ;; joueur 0 (nous)
-forall prend2(1):  exists $i for $i in reste(2,$N): ;; joueur 1 (adversaire)
-exists prend2(2):  exists $i for $i in reste(3,$N): ;; joueur 0 (nous)
-forall prend2(3):  exists $i for $i in reste(4,$N): ;; joueur 1 (adversaire)
-exists prend2(4):  exists $i for $i in reste(5,$N): ;; joueur 0 (nous)
-forall prend2(5):  exists $i for $i in reste(6,$N): ;; joueur 1 (adversaire)
-exists prend2(6):  exists $i for $i in reste(7,$N): ;; joueur 0 (nous)
-forall prend2(7):  exists $i for $i in reste(8,$N): ;; joueur 1 (adversaire)
-exists prend2(8):  exists $i for $i in reste(9,$N): ;; joueur 0 (nous)
-forall prend2(9):  exists $i for $i in reste(10,$N): ;; joueur 1 (adversaire)
-exists prend2(10): exists $i for $i in reste(11,$N): ;; joueur 0 (nous)
-forall prend2(11): exists $i for $i in reste(12,$N):  ;; joueur 1 (adversaire)
-exists prend2(12): exists $i for $i in reste(13,$N): ;; joueur 0 (nous)
-forall prend2(13): exists $i for $i in reste(14,$N): ;; joueur 1 (adversaire)
-exists prend2(14): exists $i for $i in reste(15,$N): ;; joueur 0 (nous)
-forall prend2(15): exists $i for $i in reste(16,$N): ;; joueur 1 (adversaire)
-exists prend2(16): exists $i for $i in reste(17,$N): ;; joueur 0 (nous)
-forall prend2(17): exists $i for $i in reste(18,$N): ;; joueur 1 (adversaire)
-exists prend2(18): exists $i for $i in reste(19,$N): ;; joueur 0 (nous)
-forall prend2(19): exists $i for $i in reste(20,$N): ;; joueur 1 (adversaire)
-exists prend2(20): exists $i for $i in reste(21,$N): ;; joueur 0 (nous)
-forall prend2(21): exists $i for $i in reste(22,$N): ;; joueur 1 (adversaire)
-exists prend2(22): exists $i for $i in reste(23,$N): ;; joueur 0 (nous)
-forall prend2(23): exists $i for $i in reste(24,$N): ;; joueur 1 (adversaire)
-exists prend2(24): exists $i for $i in reste(25,$N): ;; joueur 0 (nous)
-forall prend2(25): exists $i for $i in reste(26,$N): ;; joueur 1 (adversaire)
-exists prend2(26): exists $i for $i in reste(27,$N): ;; joueur 0 (nous)
-forall prend2(27): exists $i for $i in reste(28,$N): ;; joueur 1 (adversaire)
-exists prend2(28): exists $i for $i in reste(29,$N): ;; joueur 0 (nous)
-forall prend2(29): exists $i for $i in reste(30,$N): ;; joueur 1 (adversaire)
+exists prend(0,2):  exists $i for $i in reste(1,$N): \\ ;; joueur 0 (nous)
+forall prend(1,2):  exists $i for $i in reste(2,$N): ;; joueur 1 (adversaire)
+exists prend(2,2):  exists $i for $i in reste(3,$N): \\ ;; joueur 0 (nous)
+forall prend(3,2):  exists $i for $i in reste(4,$N): ;; joueur 1 (adversaire)
+exists prend(4,2):  exists $i for $i in reste(5,$N): \\ ;; joueur 0 (nous)
+forall prend(5,2):  exists $i for $i in reste(6,$N): ;; joueur 1 (adversaire)
+exists prend(6,2):  exists $i for $i in reste(7,$N): \\ ;; joueur 0 (nous)
+forall prend(7,2):  exists $i for $i in reste(8,$N): ;; joueur 1 (adversaire)
+exists prend(8,2):  exists $i for $i in reste(9,$N): \\ ;; joueur 0 (nous)
+forall prend(9,2):  exists $i for $i in reste(10,$N): ;; joueur 1 (adversaire)
+exists prend(10,2): exists $i for $i in reste(11,$N): \\ ;; joueur 0 (nous)
+forall prend(11,2): exists $i for $i in reste(12,$N):  ;; joueur 1 (adversaire)
+exists prend(12,2): exists $i for $i in reste(13,$N): \\ ;; joueur 0 (nous)
+forall prend(13,2): exists $i for $i in reste(14,$N): ;; joueur 1 (adversaire)
+exists prend(14,2): exists $i for $i in reste(15,$N): \\ ;; joueur 0 (nous)
+forall prend(15,2): exists $i for $i in reste(16,$N): ;; joueur 1 (adversaire)
+exists prend(16,2): exists $i for $i in reste(17,$N): \\ ;; joueur 0 (nous)
+forall prend(17,2): exists $i for $i in reste(18,$N): ;; joueur 1 (adversaire)
+exists prend(18,2): exists $i for $i in reste(19,$N): \\ ;; joueur 0 (nous)
+forall prend(19,2): exists $i for $i in reste(20,$N): ;; joueur 1 (adversaire)
+exists prend(20,2): exists $i for $i in reste(21,$N): \\ ;; joueur 0 (nous)
+forall prend(21,2): exists $i for $i in reste(22,$N): ;; joueur 1 (adversaire)
+exists prend(22,2): exists $i for $i in reste(23,$N): \\ ;; joueur 0 (nous)
+forall prend(23,2): exists $i for $i in reste(24,$N): ;; joueur 1 (adversaire)
+exists prend(24,2): exists $i for $i in reste(25,$N): \\ ;; joueur 0 (nous)
+forall prend(25,2): exists $i for $i in reste(26,$N): ;; joueur 1 (adversaire)
+exists prend(26,2): exists $i for $i in reste(27,$N): \\ ;; joueur 0 (nous)
+forall prend(27,2): exists $i for $i in reste(28,$N): ;; joueur 1 (adversaire)
+exists prend(28,2): exists $i for $i in reste(29,$N): \\ ;; joueur 0 (nous)
+forall prend(29,2): exists $i for $i in reste(30,$N): ;; joueur 1 (adversaire)
 
 ;; But
-not 0_a_perdu
+not 0_a_perdu \\
 ;; Conditions initiales
 and reste(0,$Nb)
-and tour_de_0(0)
+and tour_de_0(0) \\
 and
 
 ;; Resultat de l'action de la prise : si on a pris, il faut baisser
 ;; le nombre d'allumettes.
 bigand $t,$n in $T,$N when $n>=2:
-  ((reste($t,$n) and prend2($t)) => reste($t+1,$n-2))
+  ((reste($t,$n) and prend($t,2)) => reste($t+1,$n-2))
   and
-  ((reste($t,$n) and not prend2($t)) => reste($t+1,$n-1))
-end
+  ((reste($t,$n) and not prend($t,2)) => reste($t+1,$n-1))
+end \\
 and
 
 ;; On ne peut pas prendre 2 allumettes si il n'en reste plus qu'une.
 bigand $t in $T:
-  reste($t,1) => (not prend2($t) and reste($t+1,0))
-end
+  reste($t,1) => (not prend($t,2) and reste($t+1,0))
+end \\
 and
 
 ;; Au moins un nombre d'allumettes par tour.
@@ -65,21 +68,26 @@ bigand $t in $T:
   bigor $n in $N:
     reste($t,$n)
   end
-end
+end \\
 and
 
 ;; Au plus un nombre d'allumettes par tour.
 bigand $t,$n1 in $T,$N:
   reste($t,$n1) => bigand $n2 in $N when $n1!=$n2: not reste($t,$n2) end
-end
+end \\
 and
 
 ;; Si le joueur j ne peut pas prendre à t et que au coup précédent, joueur j-1
 ;; a pu prendre une allumette, alors le joueur j a perdu.
+;; Le morceau
+;;     and not (reste($t-1,1) and reste($t-1,2))
+;; est inutile car toujours vrai. Et si on remplaçait ce morceau par
+;;     and reste($t-1,1)
+;; c'est aussi inutile car reste(_,0) n'apparait qu'une fois.
 (0_a_perdu <=>
 bigor $t in $T when $t>0:
-  tour_de_0($t) and reste($t,0) and not (reste($t-1,1) and reste($t-1,2))
-end)
+  tour_de_0($t) and reste($t,0) and not reste($t-1,1)
+end) \\
 and
 
 ;; Si le joueur 0 joue au tour t, alors ça sera à l'autre joueur au tour
