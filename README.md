@@ -9,6 +9,8 @@
 
       opam install qbf touist
 
+Une version de `touist` >= 3.2.0 est requise.
+
 
 [![asciicast](https://asciinema.org/a/1t02vfdo8rsv4gicp6dtclqwy.png)](https://asciinema.org/a/1t02vfdo8rsv4gicp6dtclqwy)
 
