@@ -1,56 +1,57 @@
 ;; Requiert touist >= 3.2.0
-$Nb = 4
-$N = [0..$Nb] ;; set of matches
-$T = [0..$Nb] ;; set of turns
+$NA = 4
+$NJ = 2
+$A = [0..$NA] ;; Ensemble des allumettes
+$T = [0..$NA] ;; Ensemble des tours
 
 ;; reste(t,n) = il reste n allumettes au temps t
 ;; prend(t,2) = au temps t, 2 allumettes si vrai, 1 sinon
 
-;; Les 'exists reste(i,$N)' au tour i sont nécessaires pour être certain que
+;; Les 'exists reste(i,$A)' au tour i sont nécessaires pour être certain que
 ;; quantor fixera ces valeurs après qu'un 'prend(i,2)' est fixé. Sinon,
 ;; on ne peut jamais savoir quand 'reste(i,0)' est vrai.
-(
-exists prend(0,2):  exists $i for $i in reste(1,$N): \\ ;; joueur 0 (nous)
-forall prend(1,2):  exists $i for $i in reste(2,$N): ;; joueur 1 (adversaire)
-exists prend(2,2):  exists $i for $i in reste(3,$N): \\ ;; joueur 0 (nous)
-forall prend(3,2):  exists $i for $i in reste(4,$N): ;; joueur 1 (adversaire)
-exists prend(4,2):  exists $i for $i in reste(5,$N): \\ ;; joueur 0 (nous)
-forall prend(5,2):  exists $i for $i in reste(6,$N): ;; joueur 1 (adversaire)
-exists prend(6,2):  exists $i for $i in reste(7,$N): \\ ;; joueur 0 (nous)
-forall prend(7,2):  exists $i for $i in reste(8,$N): ;; joueur 1 (adversaire)
-exists prend(8,2):  exists $i for $i in reste(9,$N): \\ ;; joueur 0 (nous)
-forall prend(9,2):  exists $i for $i in reste(10,$N): ;; joueur 1 (adversaire)
-exists prend(10,2): exists $i for $i in reste(11,$N): \\ ;; joueur 0 (nous)
-forall prend(11,2): exists $i for $i in reste(12,$N):  ;; joueur 1 (adversaire)
-exists prend(12,2): exists $i for $i in reste(13,$N): \\ ;; joueur 0 (nous)
-forall prend(13,2): exists $i for $i in reste(14,$N): ;; joueur 1 (adversaire)
-exists prend(14,2): exists $i for $i in reste(15,$N): \\ ;; joueur 0 (nous)
-forall prend(15,2): exists $i for $i in reste(16,$N): ;; joueur 1 (adversaire)
-exists prend(16,2): exists $i for $i in reste(17,$N): \\ ;; joueur 0 (nous)
-forall prend(17,2): exists $i for $i in reste(18,$N): ;; joueur 1 (adversaire)
-exists prend(18,2): exists $i for $i in reste(19,$N): \\ ;; joueur 0 (nous)
-forall prend(19,2): exists $i for $i in reste(20,$N): ;; joueur 1 (adversaire)
-exists prend(20,2): exists $i for $i in reste(21,$N): \\ ;; joueur 0 (nous)
-forall prend(21,2): exists $i for $i in reste(22,$N): ;; joueur 1 (adversaire)
-exists prend(22,2): exists $i for $i in reste(23,$N): \\ ;; joueur 0 (nous)
-forall prend(23,2): exists $i for $i in reste(24,$N): ;; joueur 1 (adversaire)
-exists prend(24,2): exists $i for $i in reste(25,$N): \\ ;; joueur 0 (nous)
-forall prend(25,2): exists $i for $i in reste(26,$N): ;; joueur 1 (adversaire)
-exists prend(26,2): exists $i for $i in reste(27,$N): \\ ;; joueur 0 (nous)
-forall prend(27,2): exists $i for $i in reste(28,$N): ;; joueur 1 (adversaire)
-exists prend(28,2): exists $i for $i in reste(29,$N): \\ ;; joueur 0 (nous)
-forall prend(29,2): exists $i for $i in reste(30,$N): ;; joueur 1 (adversaire)
+
+exists prend(0,2):    exists $i for $i in reste(1,$A): \\ ;; joueur 0 (nous)
+forall prend(1,2):    exists $i for $i in reste(2,$A): ;; joueur 1 (adversaire)
+exists prend(2,2):    exists $i for $i in reste(3,$A): \\ ;; joueur 0 (nous)
+forall prend(3,2):    exists $i for $i in reste(4,$A): ;; joueur 1 (adversaire)
+exists prend(4,2):    exists $i for $i in reste(5,$A): \\ ;; joueur 0 (nous)
+forall prend(5,2):    exists $i for $i in reste(6,$A): ;; joueur 1 (adversaire)
+exists prend(6,2):    exists $i for $i in reste(7,$A): \\ ;; joueur 0 (nous)
+forall prend(7,2):    exists $i for $i in reste(8,$A): ;; joueur 1 (adversaire)
+exists prend(8,2):    exists $i for $i in reste(9,$A): \\ ;; joueur 0 (nous)
+forall prend(9,2):    exists $i for $i in reste(10,$A): ;; joueur 1 (adversaire)
+exists prend(10,2):   exists $i for $i in reste(11,$A): \\ ;; joueur 0 (nous)
+forall prend(11,2):   exists $i for $i in reste(12,$A):  ;; joueur 1 (adversaire)
+exists prend(12,2):   exists $i for $i in reste(13,$A): \\ ;; joueur 0 (nous)
+forall prend(13,2):   exists $i for $i in reste(14,$A): ;; joueur 1 (adversaire)
+exists prend(14,2):   exists $i for $i in reste(15,$A): \\ ;; joueur 0 (nous)
+forall prend(15,2):   exists $i for $i in reste(16,$A): ;; joueur 1 (adversaire)
+exists prend(16,2):   exists $i for $i in reste(17,$A): \\ ;; joueur 0 (nous)
+forall prend(17,2):   exists $i for $i in reste(18,$A): ;; joueur 1 (adversaire)
+exists prend(18,2):   exists $i for $i in reste(19,$A): \\ ;; joueur 0 (nous)
+forall prend(19,2):   exists $i for $i in reste(20,$A): ;; joueur 1 (adversaire)
+exists prend(20,2):   exists $i for $i in reste(21,$A): \\ ;; joueur 0 (nous)
+forall prend(21,2):   exists $i for $i in reste(22,$A): ;; joueur 1 (adversaire)
+exists prend(22,2):   exists $i for $i in reste(23,$A): \\ ;; joueur 0 (nous)
+forall prend(23,2):   exists $i for $i in reste(24,$A): ;; joueur 1 (adversaire)
+exists prend(24,2):   exists $i for $i in reste(25,$A): \\ ;; joueur 0 (nous)
+forall prend(25,2):   exists $i for $i in reste(26,$A): ;; joueur 1 (adversaire)
+exists prend(26,2):   exists $i for $i in reste(27,$A): \\ ;; joueur 0 (nous)
+forall prend(27,2):   exists $i for $i in reste(28,$A): ;; joueur 1 (adversaire)
+exists prend(28,2):   exists $i for $i in reste(29,$A): \\ ;; joueur 0 (nous)
+forall prend(29,2):   exists $i for $i in reste(30,$A): ;; joueur 1 (adversaire)
 
 ;; But
 not 0_a_perdu \\
 ;; Conditions initiales
-and reste(0,$Nb)
+and reste(0,$NA)
 and tour_de_0(0) \\
 and
 
 ;; Resultat de l'action de la prise : si on a pris, il faut baisser
 ;; le nombre d'allumettes.
-bigand $t,$n in $T,$N when $n>=2:
+bigand $t,$n in $T,$A when $n>=2:
   ((reste($t,$n) and prend($t,2)) => reste($t+1,$n-2))
   and
   ((reste($t,$n) and not prend($t,2)) => reste($t+1,$n-1))
@@ -65,15 +66,15 @@ and
 
 ;; Au moins un nombre d'allumettes par tour.
 bigand $t in $T:
-  bigor $n in $N:
+  bigor $n in $A:
     reste($t,$n)
   end
 end \\
 and
 
 ;; Au plus un nombre d'allumettes par tour.
-bigand $t,$n1 in $T,$N:
-  reste($t,$n1) => bigand $n2 in $N when $n1!=$n2: not reste($t,$n2) end
+bigand $t,$n1 in $T,$A:
+  reste($t,$n1) => bigand $n2 in $A when $n1!=$n2: not reste($t,$n2) end
 end \\
 and
 
@@ -95,4 +96,3 @@ and
 bigand $t in $T:
   not tour_de_0($t) <=> tour_de_0($t+1)
 end
-)
