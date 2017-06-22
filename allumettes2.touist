@@ -28,7 +28,7 @@ and
 ;; le nombre d'allumettes.
 bigand $t,$n in $T,$A when $n>=2:
   ((reste($t,$n) and prend_2($t)) => reste($t+1,$n-2))
-  and
+  and \\
   ((reste($t,$n) and not prend_2($t)) => reste($t+1,$n-1))
 end \\
 and
@@ -60,7 +60,7 @@ and
 ;; est inutile car toujours vrai. Et si on remplaçait ce morceau par
 ;;     and reste($t-1,1)
 ;; c'est aussi inutile car reste(_,0) n'apparait qu'une fois.
-(0_perd <=>
+(0_perd <=> \\
 bigor $t in $T when $t>0:
   tour_de_0($t) and reste($t,0) and not reste($t-1,1)
 end) \\
