@@ -1,49 +1,24 @@
 ;; Requiert touist >= 3.2.0
-$NA = 4
-$NJ = 2
+$NA = 10
+;; $NJ = 2 (inutile car ce modèle n'accepte que deux joueurs)
 $A = [0..$NA] ;; Ensemble des allumettes
 $T = [0..$NA] ;; Ensemble des tours
 
 ;; reste(t,n) = il reste n allumettes au temps t
-;; prend(t,2) = au temps t, 2 allumettes si vrai, 1 sinon
+;; prend_2(t) = au temps t, 2 allumettes si vrai, 1 sinon
 
 ;; Les 'exists reste(i,$A)' au tour i sont nécessaires pour être certain que
-;; quantor fixera ces valeurs après qu'un 'prend(i,2)' est fixé. Sinon,
+;; quantor fixera ces valeurs après qu'un 'prend_2(i)' est fixé. Sinon,
 ;; on ne peut jamais savoir quand 'reste(i,0)' est vrai.
 
-exists prend(0,2):    exists $i for $i in reste(1,$A): \\ ;; joueur 0 (nous)
-forall prend(1,2):    exists $i for $i in reste(2,$A): ;; joueur 1 (adversaire)
-exists prend(2,2):    exists $i for $i in reste(3,$A): \\ ;; joueur 0 (nous)
-forall prend(3,2):    exists $i for $i in reste(4,$A): ;; joueur 1 (adversaire)
-exists prend(4,2):    exists $i for $i in reste(5,$A): \\ ;; joueur 0 (nous)
-forall prend(5,2):    exists $i for $i in reste(6,$A): ;; joueur 1 (adversaire)
-exists prend(6,2):    exists $i for $i in reste(7,$A): \\ ;; joueur 0 (nous)
-forall prend(7,2):    exists $i for $i in reste(8,$A): ;; joueur 1 (adversaire)
-exists prend(8,2):    exists $i for $i in reste(9,$A): \\ ;; joueur 0 (nous)
-forall prend(9,2):    exists $i for $i in reste(10,$A): ;; joueur 1 (adversaire)
-exists prend(10,2):   exists $i for $i in reste(11,$A): \\ ;; joueur 0 (nous)
-forall prend(11,2):   exists $i for $i in reste(12,$A):  ;; joueur 1 (adversaire)
-exists prend(12,2):   exists $i for $i in reste(13,$A): \\ ;; joueur 0 (nous)
-forall prend(13,2):   exists $i for $i in reste(14,$A): ;; joueur 1 (adversaire)
-exists prend(14,2):   exists $i for $i in reste(15,$A): \\ ;; joueur 0 (nous)
-forall prend(15,2):   exists $i for $i in reste(16,$A): ;; joueur 1 (adversaire)
-exists prend(16,2):   exists $i for $i in reste(17,$A): \\ ;; joueur 0 (nous)
-forall prend(17,2):   exists $i for $i in reste(18,$A): ;; joueur 1 (adversaire)
-exists prend(18,2):   exists $i for $i in reste(19,$A): \\ ;; joueur 0 (nous)
-forall prend(19,2):   exists $i for $i in reste(20,$A): ;; joueur 1 (adversaire)
-exists prend(20,2):   exists $i for $i in reste(21,$A): \\ ;; joueur 0 (nous)
-forall prend(21,2):   exists $i for $i in reste(22,$A): ;; joueur 1 (adversaire)
-exists prend(22,2):   exists $i for $i in reste(23,$A): \\ ;; joueur 0 (nous)
-forall prend(23,2):   exists $i for $i in reste(24,$A): ;; joueur 1 (adversaire)
-exists prend(24,2):   exists $i for $i in reste(25,$A): \\ ;; joueur 0 (nous)
-forall prend(25,2):   exists $i for $i in reste(26,$A): ;; joueur 1 (adversaire)
-exists prend(26,2):   exists $i for $i in reste(27,$A): \\ ;; joueur 0 (nous)
-forall prend(27,2):   exists $i for $i in reste(28,$A): ;; joueur 1 (adversaire)
-exists prend(28,2):   exists $i for $i in reste(29,$A): \\ ;; joueur 0 (nous)
-forall prend(29,2):   exists $i for $i in reste(30,$A): ;; joueur 1 (adversaire)
+exists prend_2(0): \\ ;; joueur 0 (nous)
+forall prend_2(1): ;; joueur 1 (adversaire)
+exists prend_2(2): \\ ;; joueur 0 (nous)
+forall prend_2(3): ;; joueur 1 (adversaire)
+exists prend_2(4): \\ ;; joueur 0 (nous)
 
 ;; But
-not 0_a_perdu \\
+not 0_perd \\
 ;; Conditions initiales
 and reste(0,$NA)
 and tour_de_0(0) \\
@@ -52,15 +27,15 @@ and
 ;; Resultat de l'action de la prise : si on a pris, il faut baisser
 ;; le nombre d'allumettes.
 bigand $t,$n in $T,$A when $n>=2:
-  ((reste($t,$n) and prend($t,2)) => reste($t+1,$n-2))
+  ((reste($t,$n) and prend_2($t)) => reste($t+1,$n-2))
   and
-  ((reste($t,$n) and not prend($t,2)) => reste($t+1,$n-1))
+  ((reste($t,$n) and not prend_2($t)) => reste($t+1,$n-1))
 end \\
 and
 
 ;; On ne peut pas prendre 2 allumettes si il n'en reste plus qu'une.
 bigand $t in $T:
-  reste($t,1) => (not prend($t,2) and reste($t+1,0))
+  reste($t,1) => (not prend_2($t) and reste($t+1,0))
 end \\
 and
 
@@ -85,7 +60,7 @@ and
 ;; est inutile car toujours vrai. Et si on remplaçait ce morceau par
 ;;     and reste($t-1,1)
 ;; c'est aussi inutile car reste(_,0) n'apparait qu'une fois.
-(0_a_perdu <=>
+(0_perd <=>
 bigor $t in $T when $t>0:
   tour_de_0($t) and reste($t,0) and not reste($t-1,1)
 end) \\
